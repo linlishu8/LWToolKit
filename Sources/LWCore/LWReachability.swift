@@ -1,7 +1,7 @@
 import Foundation
 import Network
 
-/// Simple reachability helper using NWPathMonitor (iOS 12+)
+@available(iOS 12.0, tvOS 12.0, *)
 public final class LWReachability {
     public static let shared = LWReachability()
 

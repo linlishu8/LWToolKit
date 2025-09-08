@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
 
   s.subspec "LWCore" do |ss|
     ss.source_files = "Sources/LWCore/**/*.{h,m,swift}"
+    ss.ios.frameworks = %w(UIKit UserNotifications)   # 明确声明
   end
 
   s.subspec "UI" do |ss|

@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 /// Lightweight async image loader with in-memory caching.
+@available(iOS 14.0, *)
 public final class LWImageLoader {
     public static let shared = LWImageLoader()
 
@@ -11,8 +12,8 @@ public final class LWImageLoader {
     public init(session: URLSession = .shared) {
         self.session = session
         // Reasonable defaults for lightweight caching
-        cache.countLimit = 512         // up to 512 images (adjust as needed)
-        cache.totalCostLimit = 64 * 1_024 * 1_024 // ~64MB (rough heuristic)
+        cache.countLimit = 512                     // up to 512 images (adjust as needed)
+        cache.totalCostLimit = 64 * 1_024 * 1_024  // ~64MB (rough heuristic)
     }
 
     /// Loads an image from URL. Uses memory cache by default.
@@ -28,18 +29,25 @@ public final class LWImageLoader {
         }
 
         let (data, response) = try await session.data(from: url)
-        guard let http = response as? HTTPURLResponse else {
-            // local file or non-HTTP response is fine; just decode
-            if let img = UIImage(data: data, scale: UIScreen.main.scale) {
-                if useCache { cache.setObject(img, forKey: key, cost: data.count) }
-                return img
-            }
-            throw ImageLoaderError.decodeFailed
+
+        // 取屏幕 scale 与构造 UIImage 都需要在 MainActor 上
+        let scale = await MainActor.run { UIScreen.main.scale }
+        func makeImage(_ data: Data) async -> UIImage? {
+            await MainActor.run { UIImage(data: data, scale: scale) }
         }
+
+        // 非 HTTP 的响应（例如本地文件），直接解码即可
+        guard let http = response as? HTTPURLResponse else {
+            guard let img = await makeImage(data) else { throw ImageLoaderError.decodeFailed }
+            if useCache { cache.setObject(img, forKey: key, cost: data.count) }
+            return img
+        }
+
         guard (200..<300).contains(http.statusCode) else {
             throw ImageLoaderError.httpStatus(code: http.statusCode)
         }
-        guard let img = UIImage(data: data, scale: UIScreen.main.scale) else {
+
+        guard let img = await makeImage(data) else {
             throw ImageLoaderError.decodeFailed
         }
         if useCache { cache.setObject(img, forKey: key, cost: data.count) }

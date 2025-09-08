@@ -1,3 +1,4 @@
+#if canImport(UIKit) && (os(iOS) || os(tvOS))
 import Foundation
 import UserNotifications
 import UIKit
@@ -9,3 +10,7 @@ public enum LWNotifications {
         }
     }
 }
+
+#else
+// Non-iOS/tvOS platforms: provide no-op shims if needed
+#endif
