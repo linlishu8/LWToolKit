@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "LWToolKit"
-  s.version      = "1.0.1"
+  s.version      = "1.0.2"
   s.summary      = "iOS 工具包：Core、UI、Media、Analytics 等基础能力。"
   s.description  = <<-DESC
 一个长期可用的轻量 iOS 基础工具包，包含节流/防抖、任务队列、Keychain、缓存、本地化、AB 实验、通知、深链路由、到 UI 组件（Toast/Alert）、媒体选择与加载、事件上报等模块。
