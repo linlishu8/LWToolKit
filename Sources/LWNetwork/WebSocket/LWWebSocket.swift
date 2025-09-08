@@ -1,0 +1,2 @@
+import Foundation
+public final class LWWebSocket { private var task: URLSessionWebSocketTask?; private let url: URL; private let session = URLSession(configuration: .default); public init(url: URL){ self.url=url } ; public func connect(){ task = session.webSocketTask(with: url); task?.resume(); receive() } ; public func send(_ t:String) async throws { try await task?.send(.string(t)) } ; public func close(){ task?.cancel(with: .normalClosure, reason: nil) } ; private func receive(){ task?.receive { [weak self] _ in self?.receive() } } }

@@ -1,0 +1,3 @@
+import Foundation
+public struct LWEvent { public let event: String; public let data: String }
+public final class LWEventSource { private let url: URL; private let session = URLSession(configuration: .default); private var task: URLSessionDataTask?; private let handler: (LWEvent)->Void ; public init(url: URL, handler: @escaping (LWEvent)->Void){ self.url=url; self.handler=handler } ; public func connect(){ var req = URLRequest(url: url); req.setValue("text/event-stream", forHTTPHeaderField: "Accept"); task = session.dataTask(with: req) {_,_,_ in}; task?.resume() } ; public func close(){ task?.cancel() } }
