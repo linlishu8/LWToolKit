@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "14.0"
   s.swift_versions = ["5.9", "5.10"]
 
-  s.default_subspec = "Core"
+  s.default_subspec = "LWCore"
 
   s.subspec "LWCore" do |ss|
     ss.source_files = "Sources/LWCore/**/*.{h,m,swift}"
@@ -41,4 +41,21 @@ Pod::Spec.new do |s|
     ss.frameworks = "Security", "Network" 
     ss.source_files = "Sources/LWNetwork/**/*.{h,m,swift}"
   end
+  s.subspec "LWAnalytics" do |ss|
+    ss.dependency "LWToolKit/LWCore"
+    ss.source_files = "Sources/LWAnalytics/**/*.{h,m,swift}"
+  end
+
+
+  s.subspec "LWMedia" do |ss|
+    ss.dependency "LWToolKit/LWCore"
+    ss.source_files = "Sources/LWMedia/**/*.{h,m,swift}"
+  end
+
+
+  s.subspec "LWUI" do |ss|
+    ss.dependency "LWToolKit/LWCore"
+    ss.source_files = "Sources/LWUI/**/*.{h,m,swift}"
+  end
+
 end
