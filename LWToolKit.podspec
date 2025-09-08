@@ -21,17 +21,17 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "UI" do |ss|
-    ss.dependency "LWToolKit/Core"
+    ss.dependency "LWToolKit/LWCore"
     ss.source_files = "Sources/LWUI/**/*.{h,m,swift}"
   end
 
   s.subspec "Media" do |ss|
-    ss.dependency "LWToolKit/Core"
+    ss.dependency "LWToolKit/LWCore"
     ss.source_files = "Sources/LWMedia/**/*.{h,m,swift}"
   end
 
   s.subspec "Analytics" do |ss|
-    ss.dependency "LWToolKit/Core"
+    ss.dependency "LWToolKit/LWCore"
     ss.source_files = "Sources/LWAnalytics/**/*.{h,m,swift}"
   end
   
