@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
   s.default_subspec = "Core"
 
-  s.subspec "Core" do |ss|
+  s.subspec "LWCore" do |ss|
     ss.source_files = "Sources/LWCore/**/*.{h,m,swift}"
   end
 
@@ -34,8 +34,10 @@ Pod::Spec.new do |s|
     ss.source_files = "Sources/LWAnalytics/**/*.{h,m,swift}"
   end
   
-    s.subspec "LWNetwork" do |ss|
-    ss.dependency "LWToolKit/LWNetwork"
+  s.subspec "LWNetwork" do |ss|
+    ss.dependency "LWToolKit/LWCore"
+    ss.dependency "Alamofire", "~> 5.8"
+    ss.frameworks = "Security", "Network" 
     ss.source_files = "Sources/LWNetwork/**/*.{h,m,swift}"
   end
 end
