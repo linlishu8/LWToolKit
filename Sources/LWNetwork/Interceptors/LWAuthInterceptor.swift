@@ -97,7 +97,7 @@ public final class LWAuthInterceptor: RequestInterceptor {
         // 429：尊重 Retry-After 或指数退避
         if status == 429, request.retryCount < maxServerRetry {
             if let after = retryAfterSeconds(http) {
-                completion(.retryAfter(after))
+                completion(.retryWithDelay(after))
             } else {
                 let delay = pow(2.0, Double(request.retryCount)) * baseBackoff
                 completion(.retryWithDelay(delay))

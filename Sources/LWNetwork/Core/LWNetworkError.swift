@@ -160,4 +160,10 @@ public struct LWNetworkError: Error, LocalizedError, Equatable {
     public func with(statusCode: Int?) -> LWNetworkError {
         LWNetworkError(kind: kind, statusCode: statusCode, data: data, underlying: underlying)
     }
+    
+    public static func == (lhs: LWNetworkError, rhs: LWNetworkError) -> Bool {
+        return lhs.kind == rhs.kind
+            && lhs.statusCode == rhs.statusCode
+            && lhs.data == rhs.data
+    }
 }

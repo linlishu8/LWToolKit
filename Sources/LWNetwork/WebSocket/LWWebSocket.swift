@@ -109,13 +109,13 @@ public final class LWWebSocket: NSObject {
 
     /// 发送文本
     public func send(_ text: String) async throws {
-        try await withCheckedThrowingContinuation { cont in
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
             sync.async {
                 guard let t = self.task else {
                     return cont.resume(throwing: NSError(domain: "LWWebSocket", code: -1, userInfo: [NSLocalizedDescriptionKey: "WebSocket not connected"]))
                 }
                 t.send(.string(text)) { error in
-                    if let e = error { cont.resume(throwing: e) } else { cont.resume() }
+                    if let e = error { cont.resume(throwing: e) } else { cont.resume(returning: ()) }
                 }
             }
         }

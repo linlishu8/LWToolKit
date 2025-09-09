@@ -175,7 +175,7 @@ public final class LWEventSource: NSObject {
         let chunk = String(decoding: buffer, as: UTF8.self)
         // 查找最后一个完整的空行分隔（事件块之间以空行分割）
         // 为简单起见，这里按两连换行 "\n\n" 处理（\r\n 会在替换后转成 \n）
-        var text = chunk.replacingOccurrences(of: "\r\n", with: "\n")
+        let text = chunk.replacingOccurrences(of: "\r\n", with: "\n")
                          .replacingOccurrences(of: "\r", with: "\n")
         // 找到最后一个完整事件块边界
         guard let lastSepRange = text.range(of: "\n\n", options: .backwards) else { return }

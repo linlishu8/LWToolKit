@@ -28,7 +28,7 @@ import OSLog
  - `cURL` 输出依赖 Alamofire 的 `cURLDescription` 扩展；部分版本为异步回调形式。
  - 本实现仅使用 `EventMonitor` 的安全回调，不会阻断或修改请求流程。
  */
-public final class LWAFLogger: EventMonitor {
+public final class LWAFLogger: @unchecked Sendable, EventMonitor {
 
     // MARK: - Public
 
