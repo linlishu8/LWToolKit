@@ -4,5 +4,6 @@ use_frameworks!
 
 target 'LWToolExample' do
   pod 'LWToolKit', :path => '../'      # 指向当前仓库
+  pod 'SnapKit'
 end
 

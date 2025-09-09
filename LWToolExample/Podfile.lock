@@ -18,13 +18,16 @@ PODS:
     - LWToolKit/LWCore
   - LWToolKit/LWUI (1.0.23):
     - LWToolKit/LWCore
+  - SnapKit (5.7.1)
 
 DEPENDENCIES:
   - LWToolKit (from `../`)
+  - SnapKit
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - SnapKit
 
 EXTERNAL SOURCES:
   LWToolKit:
@@ -33,7 +36,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   LWToolKit: 4cc7f396e79861b1f6da56c61663fc0da80131b8
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
 
-PODFILE CHECKSUM: c1850fc1ec0312e084f31e13986c8db9c053ec7d
+PODFILE CHECKSUM: 7e0d2976f3204660f94ae1b2644fbfb7d02f8193
 
 COCOAPODS: 1.16.2
