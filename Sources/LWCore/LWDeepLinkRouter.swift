@@ -69,7 +69,7 @@ public final class LWDeepLinkRouter {
 
     /// 撤销某个 host 的处理器
     public func unregister(host: String) {
-        queue.sync { routes.removeValue(forKey: host.lowercased()) }
+        _ = queue.sync { routes.removeValue(forKey: host.lowercased()) }
     }
 
     /// 清空所有路由
