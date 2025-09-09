@@ -147,6 +147,7 @@ public final class LWWebSocket: NSObject {
     public func close(code: URLSessionWebSocketTask.CloseCode = .normalClosure, reason: String? = nil) {
         sync.async {
             self.shouldReconnect = false
+            self.isConnected = false
             self.stopPingTimer()
             guard let t = self.task else { return }
             let reasonData = reason?.data(using: .utf8)
