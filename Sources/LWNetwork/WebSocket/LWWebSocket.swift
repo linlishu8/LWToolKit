@@ -109,10 +109,11 @@ public final class LWWebSocket: NSObject {
 
     /// 发送文本
     public func send(_ text: String) async throws {
-        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            sync.async {
+        try await withCheckedThrowingContinuation(isolation: nil) { (cont: CheckedContinuation<Void, Error>) in
+            self.sync.async {
                 guard let t = self.task else {
-                    return cont.resume(throwing: NSError(domain: "LWWebSocket", code: -1, userInfo: [NSLocalizedDescriptionKey: "WebSocket not connected"]))
+                    cont.resume(throwing: NSError(domain: "LWWebSocket", code: -1, userInfo: [NSLocalizedDescriptionKey: "WebSocket not connected"]))
+                    return
                 }
                 t.send(.string(text)) { error in
                     if let e = error { cont.resume(throwing: e) } else { cont.resume(returning: ()) }
@@ -123,13 +124,14 @@ public final class LWWebSocket: NSObject {
 
     /// 发送二进制
     public func send(_ data: Data) async throws {
-        try await withCheckedThrowingContinuation { cont in
-            sync.async {
+        try await withCheckedThrowingContinuation(isolation: nil) { (cont: CheckedContinuation<Void, Error>) in
+            self.sync.async {
                 guard let t = self.task else {
-                    return cont.resume(throwing: NSError(domain: "LWWebSocket", code: -1, userInfo: [NSLocalizedDescriptionKey: "WebSocket not connected"]))
+                    cont.resume(throwing: NSError(domain: "LWWebSocket", code: -1, userInfo: [NSLocalizedDescriptionKey: "WebSocket not connected"]))
+                    return
                 }
                 t.send(.data(data)) { error in
-                    if let e = error { cont.resume(throwing: e) } else { cont.resume() }
+                    if let e = error { cont.resume(throwing: e) } else { cont.resume(returning: ()) }
                 }
             }
         }
