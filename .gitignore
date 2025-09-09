@@ -1,0 +1,92 @@
+# -------------------------------
+# macOS
+# -------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# -------------------------------
+# Xcode
+# -------------------------------
+build/
+DerivedData/
+xcuserdata/
+*.xccheckout
+*.xcscmblueprint
+
+# Per-user project/workspace settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# Xcode result bundles / coverage
+*.xcresult
+*.xccovreport
+*.xccovarchive
+
+# Archives & symbols
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# -------------------------------
+# Swift Package Manager
+# -------------------------------
+.build/
+.swiftpm/
+.spm/
+SourcePackages/
+
+# 对于“库”项目建议忽略 Package.resolved；
+# 若这是顶层 App 工程、希望锁定依赖版本，请删除下一行以提交 Package.resolved。
+Package.resolved
+# 旧版本 SPM
+Package.pins
+
+# -------------------------------
+# CocoaPods / Carthage / Mint / Tuist (若未使用可忽略这些条目)
+# -------------------------------
+Pods/
+Carthage/Build/
+Carthage/Checkouts/
+Mint/
+Tuist/Dependencies/
+
+# -------------------------------
+# Fastlane
+# -------------------------------
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# -------------------------------
+# Swift Playgrounds
+# -------------------------------
+timeline.xctimeline
+playground.xcworkspace
+
+# -------------------------------
+# Logs / temp / misc
+# -------------------------------
+*.log
+*.tmp
+*.orig
+*.rej
+
+# Env / local secrets (按需调整)
+.env
+.env.*
+**/Secrets*.plist
+**/Config.local.*
+
+# Archives / zips produced during sharing
+*.zip
+*.tar
+*.tgz
