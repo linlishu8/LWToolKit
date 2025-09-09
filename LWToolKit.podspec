@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => 'https://github.com/linlishu8/LWToolKit.git', :tag => s.version.to_s }
 
   s.platform       = :ios, '14.0'
-  s.swift_versions = ['5.9', '6.0']
+  s.swift_versions = '5.9'
   s.requires_arc   = true
 
   # 默认安装聚合子规格
