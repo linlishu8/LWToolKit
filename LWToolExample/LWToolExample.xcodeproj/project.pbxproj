@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		44965643A52740E5CACEC10F /* Pods_LWToolExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F995A3F11132085F50F76251 /* Pods_LWToolExample.framework */; };
+		33D8C24459BC072ECFA1C509 /* Pods_LWToolExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA39C9E83984B2711DB9251 /* Pods_LWToolExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		409646814DE135755B126C43 /* Pods-LWToolExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LWToolExample.release.xcconfig"; path = "Target Support Files/Pods-LWToolExample/Pods-LWToolExample.release.xcconfig"; sourceTree = "<group>"; };
-		4A9096591CDBD56423234874 /* Pods-LWToolExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LWToolExample.debug.xcconfig"; path = "Target Support Files/Pods-LWToolExample/Pods-LWToolExample.debug.xcconfig"; sourceTree = "<group>"; };
+		2F63E13EB00F5E8E6FDD9D7E /* Pods-LWToolExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LWToolExample.debug.xcconfig"; path = "Target Support Files/Pods-LWToolExample/Pods-LWToolExample.debug.xcconfig"; sourceTree = "<group>"; };
+		7D3E0DFC4AB08E12FD11A5AF /* Pods-LWToolExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LWToolExample.release.xcconfig"; path = "Target Support Files/Pods-LWToolExample/Pods-LWToolExample.release.xcconfig"; sourceTree = "<group>"; };
 		84427AF52E7025650092D1EE /* LWToolExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LWToolExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F995A3F11132085F50F76251 /* Pods_LWToolExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LWToolExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AA39C9E83984B2711DB9251 /* Pods_LWToolExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LWToolExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -43,18 +43,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44965643A52740E5CACEC10F /* Pods_LWToolExample.framework in Frameworks */,
+				33D8C24459BC072ECFA1C509 /* Pods_LWToolExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		75AF447CE59C92652D840AB6 /* Pods */ = {
+		25B6EA86B739F3613580CA7A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4A9096591CDBD56423234874 /* Pods-LWToolExample.debug.xcconfig */,
-				409646814DE135755B126C43 /* Pods-LWToolExample.release.xcconfig */,
+				9AA39C9E83984B2711DB9251 /* Pods_LWToolExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5B7FDD532415BE8BF683D705 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2F63E13EB00F5E8E6FDD9D7E /* Pods-LWToolExample.debug.xcconfig */,
+				7D3E0DFC4AB08E12FD11A5AF /* Pods-LWToolExample.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -65,8 +73,8 @@
 			children = (
 				84427AF72E7025650092D1EE /* LWToolExample */,
 				84427AF62E7025650092D1EE /* Products */,
-				75AF447CE59C92652D840AB6 /* Pods */,
-				C1916A58FAD9173684017CA9 /* Frameworks */,
+				5B7FDD532415BE8BF683D705 /* Pods */,
+				25B6EA86B739F3613580CA7A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,14 +86,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C1916A58FAD9173684017CA9 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F995A3F11132085F50F76251 /* Pods_LWToolExample.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -93,11 +93,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84427B082E7025660092D1EE /* Build configuration list for PBXNativeTarget "LWToolExample" */;
 			buildPhases = (
-				8873B4F77F68B07A7E4B6C40 /* [CP] Check Pods Manifest.lock */,
+				7AA571450AAA0477AD01CE51 /* [CP] Check Pods Manifest.lock */,
 				84427AF12E7025650092D1EE /* Sources */,
 				84427AF22E7025650092D1EE /* Frameworks */,
 				84427AF32E7025650092D1EE /* Resources */,
-				1E7A3CE379CF7D60365802EB /* [CP] Embed Pods Frameworks */,
+				54A29A51E4F4971217816C29 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -156,7 +156,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1E7A3CE379CF7D60365802EB /* [CP] Embed Pods Frameworks */ = {
+		54A29A51E4F4971217816C29 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,7 +173,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LWToolExample/Pods-LWToolExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8873B4F77F68B07A7E4B6C40 /* [CP] Check Pods Manifest.lock */ = {
+		7AA571450AAA0477AD01CE51 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -210,7 +210,7 @@
 /* Begin XCBuildConfiguration section */
 		84427B092E7025660092D1EE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A9096591CDBD56423234874 /* Pods-LWToolExample.debug.xcconfig */;
+			baseConfigurationReference = 2F63E13EB00F5E8E6FDD9D7E /* Pods-LWToolExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -239,7 +239,7 @@
 		};
 		84427B0A2E7025660092D1EE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 409646814DE135755B126C43 /* Pods-LWToolExample.release.xcconfig */;
+			baseConfigurationReference = 7D3E0DFC4AB08E12FD11A5AF /* Pods-LWToolExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
