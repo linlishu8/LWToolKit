@@ -129,8 +129,3 @@ public extension LWNetworkConfig {
     }
 }
 
-// MARK: - Logger
-
-public extension Logger {
-    static let lwNetwork = Logger(subsystem: Bundle.main.bundleIdentifier ?? "lw.app", category: "network")
-}

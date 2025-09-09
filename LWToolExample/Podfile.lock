@@ -1,0 +1,39 @@
+PODS:
+  - Alamofire (5.10.2)
+  - LWToolKit (1.0.22):
+    - LWToolKit/All (= 1.0.22)
+  - LWToolKit/All (1.0.22):
+    - LWToolKit/LWAnalytics
+    - LWToolKit/LWCore
+    - LWToolKit/LWMedia
+    - LWToolKit/LWNetwork
+    - LWToolKit/LWUI
+  - LWToolKit/LWAnalytics (1.0.22):
+    - LWToolKit/LWCore
+  - LWToolKit/LWCore (1.0.22)
+  - LWToolKit/LWMedia (1.0.22):
+    - LWToolKit/LWCore
+  - LWToolKit/LWNetwork (1.0.22):
+    - Alamofire (~> 5.8)
+    - LWToolKit/LWCore
+  - LWToolKit/LWUI (1.0.22):
+    - LWToolKit/LWCore
+
+DEPENDENCIES:
+  - LWToolKit (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+
+EXTERNAL SOURCES:
+  LWToolKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
+  LWToolKit: 685a4017410fed5eec9ac06ce3445c3808307004
+
+PODFILE CHECKSUM: c1850fc1ec0312e084f31e13986c8db9c053ec7d
+
+COCOAPODS: 1.16.2
