@@ -14,32 +14,56 @@ Pod::Spec.new do |s|
   s.swift_versions = ['5.9', '6.0']
   s.requires_arc   = true
 
+  # 默认安装聚合子规格
   s.default_subspecs = ['All']
 
+  # ---- 各模块 ----
+
+  s.subspec 'LWCore' do |ss|
+    ss.source_files = [
+      'LWToolKit/Sources/LWCore/**/*.{h,m,mm,swift}',
+      'Sources/LWCore/**/*.{h,m,mm,swift}'
+    ]
+    ss.frameworks = %w(UIKit UserNotifications Network Security)
+  end
+
   s.subspec 'LWUI' do |ss|
-    ss.source_files = ['Sources/LWUI/**/*{h,m,mm,swift}', 'LWToolKit/Sources/LWUI/**/*{h,m,mm,swift}']
-    ss.frameworks = %w(UIKit UserNotifications Network Security PhotosUI UniformTypeIdentifiers AppTrackingTransparency)
     ss.dependency 'LWToolKit/LWCore'
+    ss.source_files = [
+      'LWToolKit/Sources/LWUI/**/*.{h,m,mm,swift}',
+      'Sources/LWUI/**/*.{h,m,mm,swift}'
+    ]
+    ss.frameworks = %w(UIKit)
   end
+
   s.subspec 'LWMedia' do |ss|
-    ss.source_files = ['Sources/LWMedia/**/*{h,m,mm,swift}', 'LWToolKit/Sources/LWMedia/**/*{h,m,mm,swift}']
-    ss.frameworks = %w(UIKit UserNotifications Network Security PhotosUI UniformTypeIdentifiers AppTrackingTransparency)
     ss.dependency 'LWToolKit/LWCore'
+    ss.source_files = [
+      'LWToolKit/Sources/LWMedia/**/*.{h,m,mm,swift}',
+      'Sources/LWMedia/**/*.{h,m,mm,swift}'
+    ]
+    ss.frameworks = %w(PhotosUI UniformTypeIdentifiers)
   end
+
   s.subspec 'LWAnalytics' do |ss|
-    ss.source_files = ['Sources/LWAnalytics/**/*{h,m,mm,swift}', 'LWToolKit/Sources/LWAnalytics/**/*{h,m,mm,swift}']
-    ss.frameworks = %w(UIKit UserNotifications Network Security PhotosUI UniformTypeIdentifiers AppTrackingTransparency)
     ss.dependency 'LWToolKit/LWCore'
+    ss.source_files = [
+      'LWToolKit/Sources/LWAnalytics/**/*.{h,m,mm,swift}',
+      'Sources/LWAnalytics/**/*.{h,m,mm,swift}'
+    ]
   end
+
   s.subspec 'LWNetwork' do |ss|
-    ss.source_files = ['Sources/LWNetwork/**/*{h,m,mm,swift}', 'LWToolKit/Sources/LWNetwork/**/*{h,m,mm,swift}']
     ss.dependency 'LWToolKit/LWCore'
     ss.dependency 'Alamofire', '~> 5.8'
+    ss.source_files = [
+      'LWToolKit/Sources/LWNetwork/**/*.{h,m,mm,swift}',
+      'Sources/LWNetwork/**/*.{h,m,mm,swift}'
+    ]
     ss.frameworks = %w(Network Security)
   end
-  end # All subspec
 
-  # 聚合 All：包含检测到的模块
+  # ---- 聚合：All ----
   s.subspec 'All' do |ss|
     ss.dependency 'LWToolKit/LWCore'
     ss.dependency 'LWToolKit/LWUI'
@@ -47,5 +71,4 @@ Pod::Spec.new do |s|
     ss.dependency 'LWToolKit/LWAnalytics'
     ss.dependency 'LWToolKit/LWNetwork'
   end
-  s.default_subspecs = ['All']
 end
