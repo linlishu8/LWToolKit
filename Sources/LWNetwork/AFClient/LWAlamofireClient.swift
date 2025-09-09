@@ -96,7 +96,18 @@ public final class LWAlamofireClient: LWNetworking, @unchecked Sendable {
 
     public func request<T: Decodable>(_ ep: LWEndpoint, as: T.Type) async throws -> T {
         let data = try await perform(ep)
-        return try decoder.decode(T.self, from: data)
+            do {
+                return try decoder.decode(T.self, from: data)
+            } catch {
+                // 体预览（最多 N 字节，按 redactBodyKeys 脱敏）
+                let pv = LWLogRedactor.bodyPreview(
+                    data,
+                    limit: max(512, /* 与配置一致即可 */ 1024),
+                    redactKeys: ["password","token","access_token","refresh_token"]
+                ) ?? "<\(data.count) bytes>"
+                Logger.lwNetwork.error("🧩 Decoding \(T.self) failed: \(error.localizedDescription)\nbody=\n\(pv)")
+                throw LWNetworkError(kind: .decoding, statusCode: nil, data: data, underlying: error)
+            }
     }
 
     public func requestVoid(_ ep: LWEndpoint) async throws {
@@ -116,7 +127,13 @@ public final class LWAlamofireClient: LWNetworking, @unchecked Sendable {
     // MARK: - Core
 
     private func perform(_ ep: LWEndpoint) async throws -> Data {
-        let req = try buildRequest(from: ep)
+        let req: URLRequest
+            do {
+                req = try buildRequest(from: ep)
+            } catch {
+                Logger.lwNetwork.error("🚫 Build request failed for \(ep.method.rawValue) \(ep.baseURL.appendingPathComponent(ep.path)): \(error.localizedDescription)")
+                throw error
+            }
 
         // willSend 钩子
         for m in self.config.middlewares { m.willSend(req) }
@@ -162,7 +179,11 @@ public final class LWAlamofireClient: LWNetworking, @unchecked Sendable {
             return try URLEncoding.default.encode(req, with: nil)
 
         case .requestParameters(let params, let encoding):
-            return try encoding.encode(req, with: params)
+            if ep.method == .get {
+                return try URLEncoding.default.encode(req, with: params)
+            } else {
+                return try encoding.encode(req, with: params)
+            }
 
         case .requestJSONEncodable(let encodable):
             req.httpBody = try JSONEncoder().encode(LWAnyEncodable(encodable))
