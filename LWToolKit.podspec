@@ -52,6 +52,14 @@ Pod::Spec.new do |s|
       'Sources/LWAnalytics/**/*.{h,m,mm,swift}'
     ]
   end
+  
+    s.subspec 'LWH5Bridge' do |ss|
+    ss.dependency 'LWToolKit/LWCore'
+    ss.source_files = [
+      'LWToolKit/Sources/LWH5Bridge/**/*.{h,m,mm,swift}',
+      'Sources/LWH5Bridge/**/*.{h,m,mm,swift}'
+    ]
+  end
 
   s.subspec 'LWNetwork' do |ss|
     ss.dependency 'LWToolKit/LWCore'
@@ -70,5 +78,6 @@ Pod::Spec.new do |s|
     ss.dependency 'LWToolKit/LWMedia'
     ss.dependency 'LWToolKit/LWAnalytics'
     ss.dependency 'LWToolKit/LWNetwork'
+    ss.dependency 'LWToolKit/LWH5Bridge'
   end
 end

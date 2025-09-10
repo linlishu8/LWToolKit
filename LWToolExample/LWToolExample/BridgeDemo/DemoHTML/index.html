@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>H5Bridge Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style> body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial; padding: 16px; } pre{white-space:pre-wrap;background:#f6f6f6;padding:12px;border-radius:8px;} button{padding:10px 14px;border-radius:10px;border:1px solid #ccc;background:#fff;} </style>
+  </head>
+  <body>
+    <h2>H5Bridge Demo</h2>
+    <p>点击按钮调用 <code>user.info</code>：</p>
+    <button onclick="onClick()">user.info()</button>
+    <pre id="out">等待中...</pre>
+    <script>
+      async function onClick() {
+        try {
+          const res = await window.YXTBridge.call("user", "info", {});
+          document.getElementById('out').innerText = JSON.stringify(res, null, 2);
+        } catch (e) {
+          document.getElementById('out').innerText = 'Error: ' + JSON.stringify(e, null, 2);
+        }
+      }
+    </script>
+  </body>
+</html>
