@@ -9,24 +9,27 @@ import Foundation
 import WebKit
 
 public struct LWBridgeConfig {
-    public var channelName: String = "YXTBridge"
-    public var version: String = "1.0.0"
-    public var allowedHosts: Set<String> = []
-    public var maxPayloadBytes: Int = 512 * 1024 // 512KB
+    public var channelName: String
+    public var version: String
+    public var allowedHosts: [String] = []
+    public var methodAllowList: [String]? = nil// e.g., ["user.info", "bridge.version"]
+    public var maxPayloadBytes: Int = 512 * 1024
     public var logger: LWBridgeLogger = .none
-    public var methodAllowList: Set<String>? = nil // e.g., ["user.info", "bridge.version"]
 
-    public init(channelName: String = "YXTBridge",
-                version: String = "1.0.0",
-                allowedHosts: Set<String> = [],
-                maxPayloadBytes: Int = 512*1024,
-                logger: LWBridgeLogger = .none,
-                methodAllowList: Set<String>? = nil) {
+    public var autoInjectBootstrap: Bool = true
+    public var bootstrap: Bootstrap = .defaultNative
+    public var injectionTime: WKUserScriptInjectionTime = .atDocumentStart
+    public var forMainFrameOnly: Bool = true
+
+    public enum Bootstrap {
+        /// 使用原有“二段式 call + __nativeDispatch”默认脚本
+        case defaultNative
+        /// 自定义：按项目返回要注入的 JS（channel/version 可用于插值）
+        case custom((_ channel: String, _ version: String) -> String)
+    }
+    
+    public init(channelName: String, version: String) {
         self.channelName = channelName
         self.version = version
-        self.allowedHosts = allowedHosts
-        self.maxPayloadBytes = maxPayloadBytes
-        self.logger = logger
-        self.methodAllowList = methodAllowList
     }
 }

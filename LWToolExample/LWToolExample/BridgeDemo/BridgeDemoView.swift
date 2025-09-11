@@ -19,11 +19,41 @@ struct BridgeDemoView: UIViewRepresentable {
         let web = WKWebView(frame: .zero, configuration: config)
 
         // Bridge
-        let bridge = LWWebBridge(webView: web, config: .init(
-            allowedHosts: ["localhost", "127.0.0.1", "192.168.0.15"],
-            logger: .print
-        ))
-        context.coordinator.bridge = bridge   // ← 关键：强引用保存
+        var cfg = LWBridgeConfig(channelName: "JSBridge", version: "1.0.0")
+        cfg.allowedHosts = ["192.168.0.15"]
+        cfg.bootstrap = .custom { channel, version in
+            return """
+            (function(){
+              if (window.\(channel)) return;
+              const pending = new Map();
+              const uid = ()=>'cb_'+Date.now().toString(36)+Math.random().toString(36).slice(2);
+              const okit = () => window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers["\(channel)"];
+            
+              function call(method, params, cb){
+                if(!okit()){const e=new Error('no webkit');return typeof cb==='function'?cb({success:false,error:{message:String(e)}}):Promise.reject(e);}
+                const parts=String(method||'').split('.'); const module=parts[0]||''; const name=parts[1]||'';
+                const id=uid(); const body={id,module,method:name,params:params||{}};
+                if(typeof cb==='function'){ pending.set(id,{cb}); okit().postMessage(body); return; }
+                return new Promise((resolve,reject)=>{ pending.set(id,{resolve,reject}); okit().postMessage(body); });
+              }
+              function __nativeDispatch(resp){
+                const p=resp&&pending.get(resp.id); if(!p) return; pending.delete(resp.id);
+                const payload = resp.error ? {success:false,error:resp.error} : {success:true,data:resp.result};
+                if(p.cb) p.cb(payload); else if(payload.success) p.resolve(payload); else p.reject(payload.error||{message:'unknown'});
+              }
+              window.\(channel) = {
+                version: "\(version)",
+                ready: (cb)=>{ try{cb&&cb();}catch(e){} },
+                loadModule: (_m,cb)=>{ cb&&cb({success:true}); },
+                call, __nativeDispatch, _resolve: function(){}
+              };
+            })();
+            """
+        }
+        cfg.logger = .print
+        let bridge = LWWebBridge(webView: web, config: cfg)
+        context.coordinator.bridge = bridge
+        
         let providers = LWUserPlugin.Providers(
             accessToken: { "yourAccessToken" },
             refreshToken: { "yourRefreshToken" },
@@ -36,9 +66,10 @@ struct BridgeDemoView: UIViewRepresentable {
         bridge.register(plugin: LWUserPlugin(providers: providers))
 
         // Load local demo html
-        if let url = Bundle.main.url(forResource: "index", withExtension: "html") {
-            web.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
-        }
+//        if let url = Bundle.main.url(forResource: "index", withExtension: "html") {
+//            web.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+//        }
+        web.load(URLRequest(url: URL(string: "http://192.168.0.15:5173/facilityCategory22")!))
         return web
     }
 

@@ -38,13 +38,26 @@ public final class LWWebBridge: NSObject, WKScriptMessageHandler {
     }
     
     private func injectBootstrapIfNeeded() {
-        guard !isInjected else { return }
+        guard !isInjected, config.autoInjectBootstrap else { return }
         isInjected = true
-        let js = LWWebBridge.bootstrapJS(channel: config.channelName, version: config.version)
-        let script = WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true)
+
+        let js: String
+        switch config.bootstrap {
+        case .defaultNative:
+            js = LWWebBridge.defaultBootstrapJS(channel: config.channelName, version: config.version)
+        case .custom(let make):
+            js = make(config.channelName, config.version)
+        }
+
+        let script = WKUserScript(
+            source: js,
+            injectionTime: config.injectionTime,
+            forMainFrameOnly: config.forMainFrameOnly
+        )
         webView.configuration.userContentController.addUserScript(script)
         config.logger.log("bootstrap JS injected")
     }
+
     
     // MARK: - Message Handler
     
@@ -64,7 +77,7 @@ public final class LWWebBridge: NSObject, WKScriptMessageHandler {
         }
     }
     
-    private func _handle(body: Any, host: String) {          // ← 修改点
+    private func _handle(body: Any, host: String) {    
         // Security: host allowlist（file:// 时 host 为空，直接放行）
         if !host.isEmpty {
             if !config.allowedHosts.isEmpty && !config.allowedHosts.contains(host) {
@@ -146,124 +159,58 @@ public final class LWWebBridge: NSObject, WKScriptMessageHandler {
 }
 
 private extension LWWebBridge {
-    static func bootstrapJS(channel: String, version: String) -> String {
-        // 提供 Promise & 回调两种风格；维护 pending map
-        return #"""
-        (function(){
-            // 防止重复初始化
-            if (window.\#(channel)) { return; }
-            
-            // 存储待处理的请求
-            const pending = new Map();
-            
-            // 生成唯一ID
-            const genId = () => (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
-            
-            // 类型检查工具函数
-            const isFunction = (f) => typeof f === 'function';
-            
-            // 检查是否支持webkit消息机制
-            const supportsWebKitMessages = () => {
-                return window.webkit && 
-                       window.webkit.messageHandlers && 
-                       window.webkit.messageHandlers["\#(channel)"] &&
-                       typeof window.webkit.messageHandlers["\#(channel)"].postMessage === 'function';
-            };
-        
-            /**
-             * 调用原生方法
-             * @param {string} module - 模块名
-             * @param {string} method - 方法名
-             * @param {object} params - 参数
-             * @param {function} [cb] - 回调函数，可选
-             * @returns {Promise|undefined} 如果没有提供回调则返回Promise
-             */
-            const call = function(module, method, params, cb) {
-                // 验证环境支持
-                if (!supportsWebKitMessages()) {
-                    const error = new Error('WebKit message handler not available');
-                    if (isFunction(cb)) {
-                        cb(null, error);
-                        return;
-                    } else {
-                        return Promise.reject(error);
-                    }
-                }
-                
-                // 参数处理
-                if (isFunction(params)) {
-                    // 处理参数省略的情况
-                    cb = params;
-                    params = {};
-                }
-                params = params || {};
-                
-                const id = genId();
-                const payload = { id, module, method, params };
-                const hasCallback = isFunction(cb);
-                
-                try {
-                    if (!hasCallback) {
-                        // Promise风格
-                        return new Promise((resolve, reject) => {
-                            pending.set(id, { resolve, reject });
-                            window.webkit.messageHandlers["\#(channel)"].postMessage(payload);
-                        });
-                    } else {
-                        // 回调风格
-                        pending.set(id, { cb });
-                        window.webkit.messageHandlers["\#(channel)"].postMessage(payload);
-                    }
-                } catch (error) {
-                    console.error('Failed to send message:', error);
-                    if (hasCallback) {
-                        cb(null, error);
-                    } else {
-                        return Promise.reject(error);
-                    }
-                }
-            };
-        
-            /**
-             * 处理原生返回的结果
-             * @param {object} resp - 响应对象，包含id、result、error
-             */
-            const dispatch = function(resp) {
-                if (!resp || !resp.id) {
-                    console.error('Invalid response format:', resp);
-                    return;
-                }
-                
-                const item = pending.get(resp.id);
-                if (!item) {
-                    console.warn('No pending request found for id:', resp.id);
-                    return;
-                }
-                
-                // 从pending中移除
-                pending.delete(resp.id);
-                
-                // 处理响应
-                if (item.cb) {
-                    // 回调风格
-                    item.cb(resp.result || null, resp.error || null);
-                } else if (resp.error) {
-                    // Promise错误
-                    item.reject(resp.error);
-                } else {
-                    // Promise成功
-                    item.resolve(resp.result);
-                }
-            };
-        
-            // 暴露给window的接口
-            window.\#(channel) = {
-                version: "\#(version)",
-                call: call,
-                // 供原生调用的分发方法
-                __nativeDispatch: dispatch
-            };
-        })();
-        """#
-    }
+  static func defaultBootstrapJS(channel: String, version: String) -> String {
+    return #"""
+    (function(){
+      if (window.\#(channel)) return;
+      const pending = new Map();
+      const uid = () => 'cb_' + Date.now().toString(36) + Math.random().toString(36).slice(2);
+      const okit = () => window.webkit && window.webkit.messageHandlers &&
+                         window.webkit.messageHandlers["\#(channel)"];
+
+      function call(method, params, cb){
+        if (!okit()) {
+          const e = new Error('no webkit');
+          return typeof cb==='function' ? cb({success:false,error:{message:String(e)}}) : Promise.reject(e);
+        }
+        // 兼容 'user.info' → ('user','info')
+        const parts = String(method||'').split('.');
+        const module = parts[0] || ''; const name = parts[1] || '';
+        const id = uid(); const body = { id, module, method: name, params: params || {} };
+
+        if (typeof cb === 'function') {
+          pending.set(id, { cb });
+          okit().postMessage(body);
+          return;
+        }
+        return new Promise((resolve, reject)=>{
+          pending.set(id, { resolve, reject });
+          okit().postMessage(body);
+        });
+      }
+
+      // 原生仍然调用 __nativeDispatch({id,result,error})
+      function __nativeDispatch(resp){
+        const p = resp && pending.get(resp.id);
+        if (!p) return;
+        pending.delete(resp.id);
+        const payload = resp.error
+          ? { success:false, error: resp.error }
+          : { success:true,  data:  resp.result };
+        if (p.cb) p.cb(payload);
+        else if (payload.success) p.resolve(payload);
+        else p.reject(payload.error || {message:'unknown error'});
+      }
+
+      window.\#(channel) = {
+        version: "\#(version)",
+        ready: (cb)=>{ try{cb&&cb();}catch(e){} },
+        loadModule: (_m, cb)=>{ cb && cb({success:true}); },
+        call: call,
+        __nativeDispatch: __nativeDispatch, // 原生会调这个
+        _resolve: function(){}              // 兼容某些页面存在性检查
+      };
+    })();
+    """#
+  }
 }
