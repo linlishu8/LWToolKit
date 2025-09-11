@@ -1,0 +1,13 @@
+{
+  "evaluators": {
+    "api.example.com": {
+      "type": "publicKeys",
+      "includeSubdomains": false,
+      "allowInvalidCertificates": false,
+      "validateHost": true,
+      "publicKeys": [
+        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A..."
+      ]
+    }
+  }
+}
