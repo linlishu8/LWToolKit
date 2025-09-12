@@ -1,0 +1,34 @@
+{
+  "sets": [
+    {
+      "name": "prod-set",
+      "alg": "SPKI-SHA256",
+      "pins": [
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+        "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB="
+      ]
+    },
+    {
+      "name": "staging-set",
+      "alg": "SPKI-SHA256",
+      "pins": [
+        "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC=",
+        "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD="
+      ]
+    }
+  ],
+  "domains": [
+    {
+      "host": "api.example.com",
+      "set": "prod-set"
+    },
+    {
+      "host": "upload.example.com",
+      "set": "prod-set"
+    },
+    {
+      "host": "api-staging.example.com",
+      "set": "staging-set"
+    }
+  ]
+}
