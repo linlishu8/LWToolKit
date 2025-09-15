@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
     ]
   end
   
-    s.subspec 'LWH5Bridge' do |ss|
+  s.subspec 'LWH5Bridge' do |ss|
     ss.dependency 'LWToolKit/LWCore'
     ss.source_files = [
       'LWToolKit/Sources/LWH5Bridge/**/*.{h,m,mm,swift}',
@@ -70,6 +70,14 @@ Pod::Spec.new do |s|
     ]
     ss.frameworks = %w(Network Security)
   end
+  
+  s.subspec 'LWCommon' do |ss|
+    ss.dependency 'LWToolKit/LWCore'
+    ss.source_files = [
+      'LWToolKit/Sources/LWCommon/**/*.{h,m,mm,swift}',
+      'Sources/LWCommon/**/*.{h,m,mm,swift}'
+    ]
+  end
 
   # ---- 聚合：All ----
   s.subspec 'All' do |ss|
@@ -79,5 +87,6 @@ Pod::Spec.new do |s|
     ss.dependency 'LWToolKit/LWAnalytics'
     ss.dependency 'LWToolKit/LWNetwork'
     ss.dependency 'LWToolKit/LWH5Bridge'
+    ss.dependency 'LWToolKit/LWCommon'
   end
 end

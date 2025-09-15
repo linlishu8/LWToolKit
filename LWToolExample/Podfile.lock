@@ -4,12 +4,15 @@ PODS:
     - LWToolKit/All (= 1.0.29)
   - LWToolKit/All (1.0.29):
     - LWToolKit/LWAnalytics
+    - LWToolKit/LWCommon
     - LWToolKit/LWCore
     - LWToolKit/LWH5Bridge
     - LWToolKit/LWMedia
     - LWToolKit/LWNetwork
     - LWToolKit/LWUI
   - LWToolKit/LWAnalytics (1.0.29):
+    - LWToolKit/LWCore
+  - LWToolKit/LWCommon (1.0.29):
     - LWToolKit/LWCore
   - LWToolKit/LWCore (1.0.29)
   - LWToolKit/LWH5Bridge (1.0.29):
@@ -38,7 +41,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
-  LWToolKit: 291088bcb17930134180c6d6414304e248e9b95a
+  LWToolKit: 33172c666bc34574543a808f2b294ea631d98771
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
 
 PODFILE CHECKSUM: 7e0d2976f3204660f94ae1b2644fbfb7d02f8193
